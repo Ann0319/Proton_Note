@@ -1,65 +1,57 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import { useEffect, useState } from 'react'
+import Paper from '@material-ui/core/Paper'
+import Grid from '@material-ui/core/Grid'
+import Button from '@material-ui/core/Button'
+import { makeStyles } from '@material-ui/styles'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import NoteList from '../components/note/noteList'
+import NoteProcessor from '../components/note/noteProcessor'
 
-export default function Home() {
+const useStyles = makeStyles(theme => ({
+  container: {
+    margin: theme.spacing(3),
+    '& .content': {
+      width: `calc(100vw - ${theme.spacing(6)}px)`,
+      height: `calc(100vh - ${theme.spacing(6) + 70}px)`,
+      '& .block': {
+        height: '100%'
+      },
+      '& .detailView': {
+        borderLeft: '1px solid #dedede'
+      }
+    }
+  },
+  header: {
+    padding: theme.spacing(2, 3, 2),
+    borderBottom: '1px solid #dedede'
+  }
+}))
+
+const Home = () => {
+  const classes = useStyles()
+  const [noteId, setNoteId] = useState(null)
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
+    <Paper className={classes.container} elevation={8}>
+      <Grid container>
+        <Grid item xs={12} className={classes.header}>
+          <Button variant='contained' color='primary'>
+            <FontAwesomeIcon icon='edit' style={{ marginRight: 10 }} />New Note
+                </Button>
+        </Grid>
+        <Grid className='content' container>
+          <Grid className='block' item md={noteId ? 6 : 12} xs={12}>
+            <NoteList onClickItem={(id) => setNoteId(id)} />
+          </Grid>
+          {noteId &&
+            <Grid className='block detailView' item md={6} xs={12}>
+              <NoteProcessor noteId={noteId} />
+            </Grid>
+          }
+        </Grid>
+      </Grid>
+    </Paper>
   )
 }
+
+export default Home
+
