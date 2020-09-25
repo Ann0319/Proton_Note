@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import Typography from '@material-ui/core/Typography'
-import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import Divider from '@material-ui/core/Divider'
 import { makeStyles } from '@material-ui/styles'
 import IconButton from '../general/iconButton'
+import Markdown from '../general/markdown'
+import { stripIndent } from '../../lib/formator'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -54,6 +55,7 @@ const NoteProcessor = (props) => {
         if (noteId) {
             if (noteId !== '') {
                 setNote(notes[noteId])
+                console.log(note)
             } else {
                 setEditMode(true)
             }
@@ -65,11 +67,11 @@ const NoteProcessor = (props) => {
     return (
         <div className={classes.root}>
             <div className='header'>
-                <Typography variant='h5'>{note && note.title}</Typography>
+                <Typography variant='h6'>{note && note.title}</Typography>
             </div>
             <Divider variant='middle' />
             <div className={classes.content}>
-                <Typography variant='body1'>{note && note.content}</Typography>
+                <Markdown content={note && stripIndent(note.content)} />
             </div>
             <Grid container justify='space-between' className='action'>
                 {editMode &&

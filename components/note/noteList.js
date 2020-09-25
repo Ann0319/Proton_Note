@@ -5,6 +5,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import EllipsisText from '../general/ellipsis'
 import { makeStyles, withStyles } from '@material-ui/styles'
 import { connect } from 'react-redux'
+import { getNotes } from '../../redux/reducers/note'
 import _ from 'lodash'
 
 const CustomList = withStyles({
@@ -56,7 +57,7 @@ const useStyles = makeStyles(theme => ({
 
 const NoteList = (props) => {
     const classes = useStyles()
-    const { notes, onClickItem } = props
+    const { notes, getNotes, onClickItem } = props
     const [currentNoteId, setCurrentNoteId] = useState(null)
     const [noteList, setNoteList] = useState(null)
 
@@ -65,6 +66,8 @@ const NoteList = (props) => {
             const list = Object.values(notes)
             const orderedNotes = _.orderBy(list, ['updated_at'], ['desc'])
             setNoteList(orderedNotes)
+        } else {
+            getNotes()
         }
     }, [notes])
 
@@ -107,4 +110,8 @@ const mapStateToProps = (state) => {
     })
 }
 
-export default connect(mapStateToProps)(React.memo(NoteList))
+const mapDispatchToProps = {
+    getNotes
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(NoteList))

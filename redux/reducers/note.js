@@ -28,13 +28,18 @@ export const noteReducer = (state = initState, action) => {
     }
 }
 
-export const initNotes = () => async (dispatch, getState) => {
+export const getNotes = () => async (dispatch, getState) => {
     const notes = await getNoteList()
 
     if (notes) {
         dispatch({
             type: actionTypes.SET_NOTES,
-            payload: notes
+            payload: notes.reduce((result, current) => {
+                return {
+                    ...result,
+                    [current.id]: current
+                }
+            }, {})
         })
     }
 }

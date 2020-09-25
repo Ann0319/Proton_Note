@@ -7,6 +7,11 @@ const theme = createMuiTheme({
                 textTransform: 'none'
             }
         }
+    },
+    typography: {
+        h6: {
+            fontWeight: 700
+        }
     }
 })
 
