@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import Router from 'next/router'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
@@ -27,30 +28,51 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const Home = () => {
+const Home = (props) => {
   const classes = useStyles()
   const [noteId, setNoteId] = useState(null)
+  const [editing, setEditing] = useState(false)
+
+  const currentNoteId = props.query ? props.query.noteId : null
+
+  useEffect(() => {
+    setNoteId(currentNoteId)
+  }, [currentNoteId])
+
   return (
     <Paper className={classes.container} elevation={8}>
       <Grid container>
         <Grid item xs={12} className={classes.header}>
-          <Button variant='contained' color='primary'>
+          <Button variant='contained' color='primary'
+            onClick={() => {
+              Router.push({
+                pathname: '/'
+              })
+              setEditing(true)
+            }}>
             <FontAwesomeIcon icon='edit' style={{ marginRight: 10 }} />New Note
-                </Button>
+          </Button>
         </Grid>
         <Grid className='content' container>
-          <Grid className='block' item md={noteId ? 6 : 12} xs={12}>
-            <NoteList onClickItem={(id) => setNoteId(id)} />
+          <Grid className='block' item md={(noteId || editing) ? 6 : 12} xs={12}>
+            <NoteList noteId={noteId} onClickItem={(id) => {
+              setEditing(false)
+              setNoteId(id)
+            }} />
           </Grid>
-          {noteId &&
+          {(noteId || editing) &&
             <Grid className='block detailView' item md={6} xs={12}>
-              <NoteProcessor noteId={noteId} />
+              <NoteProcessor noteId={noteId} isEditMode={editing} />
             </Grid>
           }
         </Grid>
       </Grid>
     </Paper>
   )
+}
+
+Home.getInitialProps = async ({ req, query }) => {
+  return { query }
 }
 
 export default Home

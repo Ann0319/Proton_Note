@@ -9,6 +9,8 @@ import { ThemeProvider } from '@material-ui/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import theme from '../theme/theme'
 
+import 'react-markdown-editor-lite/lib/index.css'
+
 import { config, library } from '@fortawesome/fontawesome-svg-core'
 // Import Font Awesome CSS
 import '@fortawesome/fontawesome-svg-core/styles.css'

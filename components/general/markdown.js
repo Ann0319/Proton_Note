@@ -19,6 +19,7 @@ const Markdown = (props) => {
             escapeHtml={false}
             astPlugins={[parseHtml]}
             renderers={{ code: CodeBlock }}
+            className='custom-html-style'
         />
     )
 }

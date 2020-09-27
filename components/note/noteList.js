@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Router from 'next/router'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -57,9 +58,13 @@ const useStyles = makeStyles(theme => ({
 
 const NoteList = (props) => {
     const classes = useStyles()
-    const { notes, getNotes, onClickItem } = props
-    const [currentNoteId, setCurrentNoteId] = useState(null)
+    const { noteId, notes, getNotes, onClickItem } = props
+    const [currentNoteId, setCurrentNoteId] = useState(noteId || null)
     const [noteList, setNoteList] = useState(null)
+
+    useEffect(() => {
+        setCurrentNoteId(noteId)
+    }, [noteId])
 
     useEffect(() => {
         if (notes) {
@@ -73,9 +78,18 @@ const NoteList = (props) => {
 
     const handleItemClick = (id) => {
         if (id === currentNoteId) {
+            Router.push({
+                pathname: '/',
+            })
             setCurrentNoteId(null)
             onClickItem(null)
         } else {
+            Router.push({
+                pathname: '/',
+                query: {
+                    noteId: id
+                }
+            })
             setCurrentNoteId(id)
             onClickItem(id)
         }
@@ -86,10 +100,12 @@ const NoteList = (props) => {
             <div className={classes.content}>
                 <CustomList>
                     {noteList && noteList.map(l => (
-                        <CutomListItem 
-                        className={l.id === currentNoteId ? 'selected' : null} 
-                        key={l.id} button 
-                        onClick={() => handleItemClick(l.id)}>
+                        <CutomListItem
+                            className={l.id === currentNoteId ? 'selected' : null}
+                            key={l.id} button
+                            onClick={() => {
+                                handleItemClick(l.id)
+                            }}>
                             <ListItemText
                                 primaryTypographyProps={{
                                     style: { fontWeight: 'bold' }
