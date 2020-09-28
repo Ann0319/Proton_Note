@@ -109,15 +109,15 @@ const NoteProcessor = (props) => {
             if (noteId !== '') {
                 const currentNote = notes[noteId]
                 if (currentNote) {
-                setNote(currentNote)
-                setTitle(currentNote.title)
-                setEditMode(false)
-                decrypt(currentNote.content).then(data => {
-                    setDecrypted(true)
-                    setDefaultContent(data)
-                    setContent(data)
-                })
-            }
+                    setNote(currentNote)
+                    setTitle(currentNote.title)
+                    setEditMode(false)
+                    decrypt(currentNote.content).then(data => {
+                        setDecrypted(true)
+                        setDefaultContent(data)
+                        setContent(data)
+                    })
+                }
             } else {
                 setEditMode(true)
             }
@@ -234,7 +234,7 @@ const NoteProcessor = (props) => {
                             setContent(text)
                         }}
                         renderHTML={text => <Markdown content={text} />} />
-                    : (content && decrypted) ?
+                    : (content !== null && decrypted) ?
                         <Markdown content={stripIndent(content)} />
                         : <div className={classes.processingWrap}>
                             <div className='indicatorWrap'>

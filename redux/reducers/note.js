@@ -9,7 +9,6 @@ const initState = {
 // REDUCERS
 export const noteReducer = (state = initState, action) => {
     const { payload, type } = action
-    console.log(payload)
     switch (type) {
         case actionTypes.SET_NOTES:
         case actionTypes.CREATE_NOTE:
