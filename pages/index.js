@@ -62,7 +62,7 @@ const Home = (props) => {
           </Grid>
           {(noteId || editing) &&
             <Grid className='block detailView' item md={6} xs={12}>
-              <NoteProcessor noteId={noteId} isEditMode={editing} />
+              <NoteProcessor noteId={noteId} isEditMode={editing} onCancel={() => setEditing(false)} />
             </Grid>
           }
         </Grid>

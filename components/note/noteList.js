@@ -8,6 +8,7 @@ import { makeStyles, withStyles } from '@material-ui/styles'
 import { connect } from 'react-redux'
 import { getNotes } from '../../redux/reducers/note'
 import _ from 'lodash'
+import { dateTime }  from '../../lib/time'
 
 const CustomList = withStyles({
     padding: {
@@ -64,17 +65,19 @@ const NoteList = (props) => {
 
     useEffect(() => {
         setCurrentNoteId(noteId)
-    }, [noteId])
-
-    useEffect(() => {
         if (notes) {
+            if (!notes[noteId]) {
+                Router.push({
+                    pathname: '/',
+                })
+            }
             const list = Object.values(notes)
             const orderedNotes = _.orderBy(list, ['updated_at'], ['desc'])
             setNoteList(orderedNotes)
         } else {
             getNotes()
         }
-    }, [notes])
+    }, [notes, noteId])
 
     const handleItemClick = (id) => {
         if (id === currentNoteId) {
@@ -111,7 +114,7 @@ const NoteList = (props) => {
                                     style: { fontWeight: 'bold' }
                                 }}
                                 primary={<EllipsisText>{l.title}</EllipsisText>}
-                                secondary={l.updated_at} />
+                                secondary={`Updated at: ${dateTime(l.updated_at)}`} />
                         </CutomListItem>
                     ))}
                 </CustomList>

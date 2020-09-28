@@ -14,10 +14,10 @@ import 'react-markdown-editor-lite/lib/index.css'
 import { config, library } from '@fortawesome/fontawesome-svg-core'
 // Import Font Awesome CSS
 import '@fortawesome/fontawesome-svg-core/styles.css'
-import { faSave, faTrashAlt, faTimes, faPen, faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faSave, faTrashAlt, faTimes, faPen, faEdit, faUnlockAlt } from '@fortawesome/free-solid-svg-icons'
 // Tell Font Awesome to skip adding the CSS automatically since it's being imported above
 config.autoAddCss = false
-library.add(faSave, faTrashAlt, faTimes, faPen, faEdit)
+library.add(faSave, faTrashAlt, faTimes, faPen, faEdit, faUnlockAlt)
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
